@@ -2,8 +2,8 @@ package com.example.blogfinder.application;
 
 import com.example.blogfinder.infra.KeywordEntity;
 import com.example.blogfinder.infra.KeywordRepository;
-import com.example.blogfinder.presentation.Keyword;
-import com.example.blogfinder.presentation.PopularKeywordResponse;
+import com.example.blogfinder.presentation.keyword.Keyword;
+import com.example.blogfinder.presentation.keyword.PopularKeywordResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

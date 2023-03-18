@@ -1,4 +1,4 @@
-package com.example.blogfinder.presentation;
+package com.example.blogfinder.presentation.keyword;
 
 import com.example.blogfinder.infra.KeywordEntity;
 

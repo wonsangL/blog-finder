@@ -1,17 +1,17 @@
-package com.example.blogfinder.presentation;
+package com.example.blogfinder.presentation.blog;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.jdbc.Sql;
 
 import static org.hamcrest.Matchers.is;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class KeywordControllerTest {
+class BlogControllerTest {
     @LocalServerPort
     int port;
 
@@ -21,21 +21,18 @@ class KeywordControllerTest {
     }
 
     @Test
-    @Sql(scripts = {"classpath:/sql/insert_keywords.sql"})
-    @DisplayName("사용자들이 많이 검색한 키워드 10개 조회")
-    void getPopularKeywordTest() {
+    @DisplayName("키워드를 통해 블로그 검색")
+    void findBlogTest() {
         RestAssured
                 .given()
+                .queryParam("query", "카카오뱅크")
 
                 .when()
-                .get("/keywords")
+                .get("/blog")
 
                 .then()
                 .statusCode(200)
                 .assertThat()
-                .body("keywords[0].title", is("카페"))
-                .body("keywords[0].useCount", is(10))
-                .body("keywords[9].title", is("독서실"))
-                .body("keywords[9].useCount", is(1));
+                .body("data[0].title", is("<b>카카오</b><b>뱅크</b> - 나무위키"));
     }
 }
