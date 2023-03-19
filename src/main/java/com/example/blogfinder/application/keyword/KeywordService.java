@@ -26,4 +26,13 @@ public class KeywordService {
 
         return new PopularKeywordResponse(keywords);
     }
+
+    public void updateUseCount(String keyword) {
+        KeywordEntity keywordEntity = keywordRepository.findById(keyword)
+                .orElse(new KeywordEntity(keyword));
+
+        keywordEntity.setUseCount(keywordEntity.getUseCount() + 1);
+
+        keywordRepository.save(keywordEntity);
+    }
 }

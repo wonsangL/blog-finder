@@ -1,5 +1,6 @@
 package com.example.blogfinder.application.blog;
 
+import com.example.blogfinder.application.keyword.KeywordService;
 import com.example.blogfinder.domain.blog.BlogFinder;
 import com.example.blogfinder.presentation.blog.Blog;
 import com.example.blogfinder.presentation.blog.FindBlogRequest;
@@ -14,8 +15,13 @@ import java.util.List;
 public class BlogService {
     private final BlogFinder blogFinders;
 
+    private final KeywordService keywordService;
+
     public FindBlogResponse findBlogs(FindBlogRequest request) {
         List<Blog> blogs = blogFinders.find(request);
+
+        keywordService.updateUseCount(request.query());
+
         return paging(blogs);
     }
 
