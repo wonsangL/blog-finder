@@ -23,5 +23,6 @@ public class KeywordEntity {
 
     public KeywordEntity(String keyword) {
         this.title = keyword;
+        this.useCount = 0;
     }
 }
