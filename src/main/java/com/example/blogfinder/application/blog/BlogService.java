@@ -22,10 +22,6 @@ public class BlogService {
 
         keywordService.updateUseCount(request.query());
 
-        return paging(blogs);
-    }
-
-    private FindBlogResponse paging(List<Blog> blogs) {
         return new FindBlogResponse(blogs);
     }
 }
