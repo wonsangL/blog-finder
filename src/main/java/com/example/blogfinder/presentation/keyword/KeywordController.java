@@ -1,6 +1,6 @@
 package com.example.blogfinder.presentation.keyword;
 
-import com.example.blogfinder.application.KeywordService;
+import com.example.blogfinder.application.keyword.KeywordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

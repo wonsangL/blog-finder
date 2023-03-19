@@ -26,6 +26,7 @@ class BlogControllerTest {
         RestAssured
                 .given()
                 .queryParam("query", "카카오뱅크")
+                .queryParam("sort", "accuracy")
 
                 .when()
                 .get("/blog")
