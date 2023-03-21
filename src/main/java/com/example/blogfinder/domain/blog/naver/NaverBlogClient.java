@@ -4,11 +4,14 @@ import com.example.blogfinder.domain.blog.BlogClient;
 import com.example.blogfinder.domain.blog.CannotFoundBlogException;
 import com.example.blogfinder.domain.blog.FindBlogResult;
 import com.example.blogfinder.presentation.blog.FindBlogRequest;
+import com.example.blogfinder.presentation.blog.SortType;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import static com.example.blogfinder.presentation.blog.SortType.ACCURACY;
 
 @Component
 @DependsOn("kakaoBlogClient")
@@ -26,7 +29,7 @@ public class NaverBlogClient implements BlogClient {
                         .queryParam("query", request.query())
                         .queryParam("display", request.size())
                         .queryParam("start", request.page())
-                        .queryParam("sort", request.sort().equals("accuracy") ? "sim" : "date")
+                        .queryParam("sort", request.sort() == ACCURACY? "sim" : "date")
                         .build()
                 ).retrieve()
                 .onStatus(HttpStatusCode::isError, clientResponse -> clientResponse.bodyToMono(String.class)

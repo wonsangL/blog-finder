@@ -4,10 +4,13 @@ import com.example.blogfinder.domain.blog.BlogClient;
 import com.example.blogfinder.domain.blog.CannotFoundBlogException;
 import com.example.blogfinder.domain.blog.FindBlogResult;
 import com.example.blogfinder.presentation.blog.FindBlogRequest;
+import com.example.blogfinder.presentation.blog.SortType;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import static com.example.blogfinder.presentation.blog.SortType.ACCURACY;
 
 @Component
 public class KakaoBlogClient implements BlogClient {
@@ -19,7 +22,7 @@ public class KakaoBlogClient implements BlogClient {
     public FindBlogResult find(FindBlogRequest request) {
         KakaoSearchBlogResponse response = webClient.get()
                 .uri("/v2/search/blog", uriBuilder -> uriBuilder.queryParam("query", request.query())
-                        .queryParam("sort", request.sort())
+                        .queryParam("sort", request.sort() == ACCURACY ? "accuracy" : "recency")
                         .queryParam("page", request.page())
                         .queryParam("size", request.size())
                         .build()

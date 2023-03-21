@@ -34,12 +34,12 @@ java -jar blog-finder-0.0.1-SNAPSHOT.jar
 키워드로 검색된 블로그 정보를 조회합니다
 #### Request
 ##### Parameter
-| Name  | Type | Description | Required |
-|-------|------|-------------|----------|
-| query | String | 검색하고자하는 키워드 | O |
-| sort | String | 결과 문서 정렬 방식, accuracy(정확도순) 또는 recency(최신순)<br/>기본 값 accuracy | X |
-| page | Integer | 결과 페이지 번호 | X |
-| size | Integer | 한 페이지에 보여줄 결과 수 | X |
+| Name  | Type | Description                                                   | Required |
+|-------|------|---------------------------------------------------------------|----------|
+| query | String | 검색하고자하는 키워드                                                   | O |
+| sort | String | 결과 문서 정렬 방식, ACCURACY(정확도순) 또는 RECENCY(최신순)<br/>기본 값 ACCURACY | X |
+| page | Integer | 결과 페이지 번호                                                     | X |
+| size | Integer | 한 페이지에 보여줄 결과 수                                               | X |
 #### Response
 ##### meta
 | Name  | Type    | Descripiton                                                          |
