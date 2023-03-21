@@ -7,7 +7,7 @@
 - Spring Boot 3.0.4 
 - JPA
 - Redis
-  - 블로그 검색 기능 캐싱
+  - 블로그 검색 결과 캐싱
 - RestAssured
   - Acceptance Test를 위하여 사용
 
