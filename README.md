@@ -66,10 +66,12 @@ java -jar blog-finder-0.0.1-SNAPSHOT.jar
 
 ## 주요 구현 내용
 - 블로그 검색 소스가 추가되는 경우를 고려
+  - 블로그 검색 소스를 [추상화](src/main/java/com/example/blogfinder/domain/blog/BlogClient.java)하여, 검색 소스가 추가되더라도 이를 사용하는 [클라이언트](src/main/java/com/example/blogfinder/domain/blog/BlogFinder.java)에는 수정이 필요하지 않도록 설계
+  - `@DependsOn`를 사용하여 검색 소스의 순서를 지정, 특정 검색 소스에 문제가 있으면 다음 검색 소스를 사용한다고 가정하였다.
 - 트래픽이 많은 상황을 고려
+  - 캐싱을 통해 성능 최적화
 - 동시성이 이슈가 발생하는 상황 고려
 
 ## 아쉬웠던 점 및 추가 고민해볼 부분
 - 캐싱된 블로그 데이터에 중복이 발생할 수 있다.
   - `page=1&size=10` 결과와 `page=1&size=20`의 파라미터로 블로그를 검색할 경우 `page=1&size=10` 데이터는 중복되어 존재할 수 있다.
-- 
