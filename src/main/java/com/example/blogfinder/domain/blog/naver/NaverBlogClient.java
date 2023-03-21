@@ -1,7 +1,7 @@
 package com.example.blogfinder.domain.blog.naver;
 
 import com.example.blogfinder.domain.blog.BlogClient;
-import com.example.blogfinder.domain.blog.Blog;
+import com.example.blogfinder.domain.blog.CannotFoundBlogException;
 import com.example.blogfinder.domain.blog.FindBlogResult;
 import com.example.blogfinder.presentation.blog.FindBlogRequest;
 import org.springframework.context.annotation.DependsOn;
@@ -29,12 +29,14 @@ public class NaverBlogClient implements BlogClient {
                         .queryParam("sort", request.sort().equals("accuracy") ? "sim" : "date")
                         .build()
                 ).retrieve()
-                .onStatus(HttpStatusCode::isError, clientResponse -> Mono.empty())
+                .onStatus(HttpStatusCode::isError, clientResponse -> clientResponse.bodyToMono(String.class)
+                        .switchIfEmpty(Mono.just(clientResponse.statusCode().toString()))
+                        .map(CannotFoundBlogException::new))
                 .bodyToMono(NaverSearchBlogResponse.class)
                 .block();
 
         if (response == null || response.items() == null) {
-            return null;
+            throw new CannotFoundBlogException("response is null");
         }
 
         return FindBlogResult.from(response);
