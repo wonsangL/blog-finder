@@ -12,6 +12,16 @@
   - Acceptance Test를 위하여 사용
 
 ## Installation and Getting Started
+해당 프로젝트는 아래와 같은 설정으로 `Redis`를 사용하고 있습니다.
+
+```yaml
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+```
+
 ```text
 git clone https://github.com/wonsangL/blog-finder.git
 
@@ -54,3 +64,12 @@ java -jar blog-finder-0.0.1-SNAPSHOT.jar
 | title    | String  | 검색에 사용한 키워드    |
 | useCount | Integer | 해당 키워드가 사용된 횟수 |
 
+## 주요 구현 내용
+- 블로그 검색 소스가 추가되는 경우를 고려
+- 트래픽이 많은 상황을 고려
+- 동시성이 이슈가 발생하는 상황 고려
+
+## 아쉬웠던 점 및 추가 고민해볼 부분
+- 캐싱된 블로그 데이터에 중복이 발생할 수 있다.
+  - `page=1&size=10` 결과와 `page=1&size=20`의 파라미터로 블로그를 검색할 경우 `page=1&size=10` 데이터는 중복되어 존재할 수 있다.
+- 
