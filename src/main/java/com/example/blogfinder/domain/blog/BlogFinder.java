@@ -14,7 +14,7 @@ import java.util.List;
 public class BlogFinder {
     private final List<BlogClient> blogClients;
 
-    @Cacheable(cacheNames = "blog", key = "#request", unless = "#result.meta().total() == 0")
+    @Cacheable(cacheNames = "blog", key = "#request", condition = "!#request.sort().equals('recency')", unless = "#result.meta().total() == 0")
     public FindBlogResult find(FindBlogRequest request) {
         for (BlogClient blogClient : blogClients) {
             try {
