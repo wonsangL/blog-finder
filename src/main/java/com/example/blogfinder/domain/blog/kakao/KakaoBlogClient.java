@@ -1,14 +1,13 @@
 package com.example.blogfinder.domain.blog.kakao;
 
 import com.example.blogfinder.domain.blog.BlogClient;
-import com.example.blogfinder.presentation.blog.Blog;
+import com.example.blogfinder.domain.blog.Blog;
+import com.example.blogfinder.domain.blog.FindBlogResult;
 import com.example.blogfinder.presentation.blog.FindBlogRequest;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @Component
 public class KakaoBlogClient implements BlogClient {
@@ -21,7 +20,7 @@ public class KakaoBlogClient implements BlogClient {
             .build();
 
     @Override
-    public List<Blog> find(FindBlogRequest request) {
+    public FindBlogResult find(FindBlogRequest request) {
         KakaoSearchBlogResponse response = webClient.get()
                 .uri("/v2/search/blog", uriBuilder -> uriBuilder.queryParam("query", request.query())
                         .queryParam("sort", request.sort())
@@ -38,9 +37,6 @@ public class KakaoBlogClient implements BlogClient {
             return null;
         }
 
-        return response.documents()
-                .stream()
-                .map(Blog::new)
-                .toList();
+        return FindBlogResult.from(response);
     }
 }

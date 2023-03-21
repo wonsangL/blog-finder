@@ -1,4 +1,4 @@
-package com.example.blogfinder.presentation.blog;
+package com.example.blogfinder.domain.blog;
 
 import com.example.blogfinder.domain.blog.kakao.KakaoBlog;
 import com.example.blogfinder.domain.blog.naver.NaverBlog;

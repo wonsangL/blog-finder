@@ -1,15 +1,14 @@
 package com.example.blogfinder.domain.blog.naver;
 
 import com.example.blogfinder.domain.blog.BlogClient;
-import com.example.blogfinder.presentation.blog.Blog;
+import com.example.blogfinder.domain.blog.Blog;
+import com.example.blogfinder.domain.blog.FindBlogResult;
 import com.example.blogfinder.presentation.blog.FindBlogRequest;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @Component
 @DependsOn("kakaoBlogClient")
@@ -21,7 +20,7 @@ public class NaverBlogClient implements BlogClient {
             .build();
 
     @Override
-    public List<Blog> find(FindBlogRequest request) {
+    public FindBlogResult find(FindBlogRequest request) {
         NaverSearchBlogResponse response = webClient.get()
                 .uri("/v1/search/blog.json", uriBuilder -> uriBuilder
                         .queryParam("query", request.query())
@@ -38,9 +37,6 @@ public class NaverBlogClient implements BlogClient {
             return null;
         }
 
-        return response.items()
-                .stream()
-                .map(Blog::new)
-                .toList();
+        return FindBlogResult.from(response);
     }
 }

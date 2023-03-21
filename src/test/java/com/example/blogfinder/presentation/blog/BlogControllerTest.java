@@ -1,6 +1,10 @@
 package com.example.blogfinder.presentation.blog;
 
-import com.example.blogfinder.domain.blog.BlogFinder;
+import com.example.blogfinder.domain.blog.FindBlogResult;
+import com.example.blogfinder.domain.blog.kakao.KakaoBlog;
+import com.example.blogfinder.domain.blog.kakao.KakaoBlogClient;
+import com.example.blogfinder.domain.blog.kakao.KakaoSearchBlogMeta;
+import com.example.blogfinder.domain.blog.kakao.KakaoSearchBlogResponse;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,7 +27,7 @@ class BlogControllerTest {
     int port;
 
     @MockBean
-    private BlogFinder blogFinder;
+    private KakaoBlogClient blogFinder;
 
     @BeforeEach
     void setup() {
@@ -32,17 +37,19 @@ class BlogControllerTest {
     @Test
     @DisplayName("키워드를 통해 블로그 검색")
     void findBlogTest() {
-        Blog blog = new Blog("<b>카카오뱅크</b> 비상금대출 조건 연장 이자 어떻게 낮출까?", "", "");
+        KakaoBlog blog = new KakaoBlog("<b>카카오뱅크</b> 비상금대출 조건 연장 이자 어떻게 낮출까?", "", "", "", OffsetDateTime.now());
+        List<KakaoBlog> blogs = Collections.singletonList(blog);
 
-        List<Blog> blogs = Collections.singletonList(blog);
+        KakaoSearchBlogMeta meta = new KakaoSearchBlogMeta(1, 1, true);
+
+        FindBlogResult result = FindBlogResult.from(new KakaoSearchBlogResponse(meta, blogs));
 
         when(blogFinder.find(any()))
-                .thenReturn(blogs);
+                .thenReturn(result);
 
         RestAssured
                 .given()
                 .queryParam("query", "카카오뱅크")
-                .queryParam("sort", "accuracy")
 
                 .when()
                 .get("/blog")
