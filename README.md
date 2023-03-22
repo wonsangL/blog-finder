@@ -12,7 +12,7 @@
   - Acceptance Test를 위하여 사용
 
 ## Installation and Getting Started
-해당 프로젝트는 아래와 같은 설정으로 `Redis`를 사용하고 있습니다.
+해당 프로젝트는 아래와 같은 설정으로 `Redis`를 사용하고 있어, `Redis` 설치가 필요합니다.
 
 ```yaml
 spring:
