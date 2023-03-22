@@ -1,7 +1,7 @@
 package com.example.blogfinder.domain.blog.naver;
 
 import com.example.blogfinder.domain.blog.BlogClient;
-import com.example.blogfinder.domain.blog.CannotFoundBlogException;
+import com.example.blogfinder.domain.blog.BlogClientException;
 import com.example.blogfinder.domain.blog.FindBlogResult;
 import com.example.blogfinder.presentation.blog.FindBlogRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class NaverBlogClient implements BlogClient {
     public NaverBlogClient(HttpClient httpClient) {
         webClient = WebClient.builder()
                 .baseUrl("https://openapi.naver.com")
-                .defaultHeader("X-Naver-Client-Id", "tEVFc3LWkehfee775Nf2")
+                .defaultHeader("X-Naver-Client-Id", "tEVFc3LWkehfee775Nf2a")
                 .defaultHeader("X-Naver-Client-Secret", "80WPzYDoLM")
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .build();
@@ -42,12 +42,12 @@ public class NaverBlogClient implements BlogClient {
                 ).retrieve()
                 .onStatus(HttpStatusCode::isError, clientResponse -> clientResponse.bodyToMono(String.class)
                         .switchIfEmpty(Mono.just(clientResponse.statusCode().toString()))
-                        .map(CannotFoundBlogException::new))
+                        .map(BlogClientException::new))
                 .bodyToMono(NaverSearchBlogResponse.class)
                 .block();
 
         if (response == null || response.items() == null) {
-            throw new CannotFoundBlogException("response is null");
+            throw new BlogClientException("response is null");
         }
 
         return FindBlogResult.from(response);

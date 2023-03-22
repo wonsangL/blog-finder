@@ -14,12 +14,12 @@ import java.util.List;
 public class BlogFinder {
     private final List<BlogClient> blogClients;
 
-    @Cacheable(cacheNames = "blog", key = "#request", condition = "!#request.sort().equals('recency')", unless = "#result.meta().total() == 0")
+    @Cacheable(cacheNames = "blog", key = "#request", condition = "!#request.sort().equals('recency')")
     public FindBlogResult find(FindBlogRequest request) {
         for (BlogClient blogClient : blogClients) {
             try {
                 return blogClient.find(request);
-            } catch (CannotFoundBlogException e) {
+            } catch (BlogClientException e) {
                 log.warn("""
                         {} 블로그 검색 API 호출에 실패하였습니다.
                         request: {}
@@ -27,6 +27,6 @@ public class BlogFinder {
             }
         }
 
-        return FindBlogResult.createEmpty();
+        throw new CannotFoundBlogException();
     }
 }
