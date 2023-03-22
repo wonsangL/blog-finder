@@ -27,6 +27,7 @@ public class KeywordCacheManager {
             if (keyword.title().equals(keywordEntity.getTitle()) ||
                     keyword.useCount() <= keywordEntity.getUseCount()) {
                 keywordsCache.clear();
+                return;
             }
         }
     }
