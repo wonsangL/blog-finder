@@ -38,7 +38,7 @@ public class KeywordService {
 
         keywordEntity.setUseCount(keywordEntity.getUseCount() + 1);
 
-        keywordCacheManager.update(keywordEntity);
+        keywordCacheManager.clearIfPopularKeywordsChange(keywordEntity);
 
         keywordRepository.save(keywordEntity);
     }
