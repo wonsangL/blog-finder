@@ -32,14 +32,15 @@ java -jar blog-finder-0.0.1-SNAPSHOT.jar
 ## API 명세
 ### GET /blog
 키워드로 검색된 블로그 정보를 조회합니다
+
 #### Request
 ##### Parameter
 | Name  | Type | Description                                                   | Required |
 |-------|------|---------------------------------------------------------------|----------|
 | query | String | 검색하고자하는 키워드                                                   | O |
 | sort | String | 결과 문서 정렬 방식, ACCURACY(정확도순) 또는 RECENCY(최신순)<br/>기본 값 ACCURACY | X |
-| page | Integer | 결과 페이지 번호                                                     | X |
-| size | Integer | 한 페이지에 보여줄 결과 수                                               | X |
+| page | Integer | 결과 페이지 번호<br/>1~50 사이의 값, 기본 값 1                              | X |
+| size | Integer | 한 페이지에 보여줄 결과 수<br/>1~50 사이의 값, 기본 값 10                       | X |
 #### Response
 ##### meta
 | Name  | Type    | Descripiton                                                          |
@@ -53,6 +54,28 @@ java -jar blog-finder-0.0.1-SNAPSHOT.jar
 | content | String | 블로그 글 요약 |
 | name    | String | 블로그 이름 |
 
+#### Example
+##### Request
+```curl
+curl --location --request GET 'localhost:8080/blog?query=kakaobank'
+```
+##### Response
+```json
+{
+    "meta": {
+        "total": 2198,
+        "isEnd": false
+    },
+    "data": [
+        {
+            "title": "카카오뱅크 사칭 피싱 사이트-<b>kakaobank</b>(.)cc(2022.10.1)",
+            "content": "것을 볼 수가 있습니다. 카카오뱅크 피싱 사이트 웹소스 &lt;/script&gt; &lt;div id=&#34;wrapper&#34;&gt; &lt;div&gt;&lt;a href=&#34;/&#34;&gt;&lt;img src=&#34;./index_files/mm2022-03(.)jpg&#34; alt=&#34;<b>KAKAOBANK</b>채무통합 4대 보험에 가입되어 있나요? 그럼, 신청하세요!&#34;&gt;&lt;/a&gt;&lt;/div&gt; &lt;div&gt;&lt;img src=&#34;./index_files/main01-01)(.)jpg&#34; alt=&#34;<b>KAKAOBANK</b>채무통합 4...",
+            "name": "꿈을꾸는 파랑새"
+        }
+    ]
+}
+```
+
 ### GET /keywords
 블로그 검색에 사용된 키워드 중 가장 많이 사용된 10개를 조회합니다.
 
@@ -63,6 +86,23 @@ java -jar blog-finder-0.0.1-SNAPSHOT.jar
 |----------|---------|----------------|
 | title    | String  | 검색에 사용한 키워드    |
 | useCount | Integer | 해당 키워드가 사용된 횟수 |
+
+#### Example
+##### Request
+```curl
+curl --location --request GET 'localhost:8080/keywords'
+```
+##### Response
+```json
+{
+  "keywords": [
+    {
+      "title": "카카오뱅크",
+      "useCount": 4
+    }
+  ]
+}
+```
 
 ## 주요 구현 내용
 - 블로그 검색 소스가 추가되는 경우를 고려
