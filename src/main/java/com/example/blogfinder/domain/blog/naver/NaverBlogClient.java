@@ -4,23 +4,31 @@ import com.example.blogfinder.domain.blog.BlogClient;
 import com.example.blogfinder.domain.blog.CannotFoundBlogException;
 import com.example.blogfinder.domain.blog.FindBlogResult;
 import com.example.blogfinder.presentation.blog.FindBlogRequest;
-import com.example.blogfinder.presentation.blog.SortType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
 
 import static com.example.blogfinder.presentation.blog.SortType.ACCURACY;
 
 @Component
 @DependsOn("kakaoBlogClient")
 public class NaverBlogClient implements BlogClient {
-    private final WebClient webClient = WebClient.builder()
-            .baseUrl("https://openapi.naver.com")
-            .defaultHeader("X-Naver-Client-Id", "tEVFc3LWkehfee775Nf2")
-            .defaultHeader("X-Naver-Client-Secret", "80WPzYDoLM")
-            .build();
+    private final WebClient webClient;
+
+    @Autowired
+    public NaverBlogClient(HttpClient httpClient) {
+        webClient = WebClient.builder()
+                .baseUrl("https://openapi.naver.com")
+                .defaultHeader("X-Naver-Client-Id", "tEVFc3LWkehfee775Nf2")
+                .defaultHeader("X-Naver-Client-Secret", "80WPzYDoLM")
+                .clientConnector(new ReactorClientHttpConnector(httpClient))
+                .build();
+    }
 
     @Override
     public FindBlogResult find(FindBlogRequest request) {

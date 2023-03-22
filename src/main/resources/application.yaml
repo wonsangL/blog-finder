@@ -8,3 +8,7 @@ spring:
   data:
     redis:
       host: localhost
+
+httpclient:
+  response-timeout-seconds: 2
+  connection-timeout-millis: 3000
