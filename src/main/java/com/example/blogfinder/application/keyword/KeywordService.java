@@ -1,10 +1,12 @@
 package com.example.blogfinder.application.keyword;
 
+import com.example.blogfinder.domain.keyword.KeywordCacheManager;
 import com.example.blogfinder.infra.KeywordEntity;
 import com.example.blogfinder.infra.KeywordRepository;
 import com.example.blogfinder.presentation.keyword.Keyword;
 import com.example.blogfinder.presentation.keyword.PopularKeywordResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +16,9 @@ import java.util.List;
 public class KeywordService {
     private final KeywordRepository keywordRepository;
 
+    private final KeywordCacheManager keywordCacheManager;
+
+    @Cacheable(cacheNames = "keywords", key = "'top10'")
     public PopularKeywordResponse getPopularKeywords() {
         List<KeywordEntity> keywords = keywordRepository.findTop10Keywords();
         return mapToResponse(keywords);
@@ -32,6 +37,8 @@ public class KeywordService {
                 .orElse(new KeywordEntity(keyword));
 
         keywordEntity.setUseCount(keywordEntity.getUseCount() + 1);
+
+        keywordCacheManager.update(keywordEntity);
 
         keywordRepository.save(keywordEntity);
     }
