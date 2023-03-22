@@ -1,6 +1,15 @@
 spring:
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:test;MODE=MySQL;DATABASE_TO_LOWER=TRUE
+    url: jdbc:h2:mem:service;MODE=MySQL;DATABASE_TO_LOWER=TRUE
   jpa:
     generate-ddl: true
+    open-in-view: false
+  data:
+    redis:
+      #편의상 서비스 Redis 동일하게 설정
+      host: localhost
+
+httpclient:
+  response-timeout-seconds: 2
+  connection-timeout-millis: 3000
